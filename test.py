@@ -1,4 +1,5 @@
 from pathlib import Path
+from uuid import uuid4
 
 import torch
 from diffusers import QwenImage21Pipeline
@@ -39,9 +40,9 @@ def main():
 
     try:
         image = pipe(
-            prompt='A neon shop sign that reads "QWEN IMAGE 2.1", rainy night, reflections on wet pavement',
-            width=1024,
-            height=1024,
+            prompt='Print "Happy New Year" with transparent background',
+            width=512,
+            height=512,
             num_inference_steps=40,
             generator=torch.Generator("cpu").manual_seed(42),
         ).images[0]
@@ -50,7 +51,9 @@ def main():
             "GPU memory exhausted. Close other GPU applications or reduce width and height."
         ) from error
 
-    output_path = Path(__file__).resolve().with_name("t2i_example.png")
+    output_dir = Path(__file__).resolve().parent / "storage"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = output_dir / f"t2i_{uuid4().hex}.png"
     image.save(output_path)
     print(f"Saved: {output_path}")
 
