@@ -18,7 +18,7 @@ def main():
 
     try:
         pipe = QwenImage21Pipeline.from_pretrained(
-            "Qwen/Qwen-Image-2.1",
+            "Qwen/Qwen-Image-2.1-Turbo", # Qwen/Qwen-Image-2.1
             dtype=dtype,
             low_cpu_mem_usage=True,
             disable_mmap=False,
@@ -40,9 +40,9 @@ def main():
 
     try:
         image = pipe(
-            prompt='Print "Happy New Year" with transparent background',
-            width=512,
-            height=512,
+            prompt='anime girl with green hair on transparent background',
+            width=384, # 380
+            height=544, # 535
             num_inference_steps=40,
             generator=torch.Generator("cpu").manual_seed(42),
         ).images[0]
